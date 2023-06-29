@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- slider stylesheet -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css"
+    />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/volunteers.css" />
+
+    <!-- fonts style -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Dosis:400,500|Poppins:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom styles for this template -->
+    <link href="../css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="../css/responsive.css" rel="stylesheet" />
+    
+</head>
+<body>
+    <!-- <h4> plej donatwe</h4><br><br>-->
+    <!-- <button href="/volunteer">go back</button>  -->
+    <h4 style="color:white;" id="ordrID"><%= order_id %> </h4>
+    <h4 style="color:white;" id="payID"><%= payment_id %> </h4>
+    <h4 style="color:white;" id="sig"> <%= signature %> </h4><br><br>
+    <section class="buy_section layout_padding">
+      <h3>Payment successful!!!</h3><br><br>
+        <div class="container">
+          <div class="d-flex justify-content-center">
+            
+            
+            <a href="/volunteer">
+              Go back 
+            </a>
+          </div>
+        </div>
+      </section>
+</body>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script> 
+<script src="../payments.js"></script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCKuaoONp77W6Yxrtz3McXueNni4gxVmfU",
+    authDomain: "woofy-46f44.firebaseapp.com",
+    databaseURL: "https://woofy-46f44-default-rtdb.firebaseio.com",
+    projectId: "woofy-46f44",
+    storageBucket: "woofy-46f44.appspot.com",
+    messagingSenderId: "762347083399",
+    appId: "1:762347083399:web:89bbe7dc09b48c21218a22",
+    measurementId: "G-F5ZR88TD90"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  
+  import {getDatabase, set, get, update, remove, ref, child}
+  from "https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js"
+
+  const db = getDatabase();
+  var order_id = document.querySelector("#ordrID").innerHTML;
+  var payment_id = document.querySelector("#payID").innerHTML;
+  //var dogName = document.querySelector("#dogName"); for dog image
+  var sig = document.querySelector("#sig").innerHTML;
+
+  console.log("Order ID: "+order_id)
+  console.log("Payment ID: "+payment_id)
+  console.log("Razorpay Signature: "+sig)
+
+  var findBtn = document.querySelector("#findBtn");
+
+  window.addEventListener('load', insertPayment)
+
+  function insertPayment() {
+      set(ref(db, "Payments/" + order_id), {
+          OrderID: order_id,
+          PaymentID: payment_id,
+          RazorpaySignature: sig
+      })
+      .then(()=>{
+          // alert("Data entered successfully!!")
+      })
+      .catch((error)=>{
+          alert(error)
+      });
+
+  }
+
+  </script>
+</html>
