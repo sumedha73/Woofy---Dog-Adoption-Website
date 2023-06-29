@@ -1,1 +1,1 @@
-# Woofy---Dog-Adoption-Website
+# Woofy Dog-Adoption-Website
